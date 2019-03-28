@@ -1,0 +1,38 @@
+$primary: #414df4;
+$secondary: #f49242;
+$third: #f43844;
+$fourth: #38f4a8;
+
+
+.navbar {
+  background-color: $secondary;
+  margin: 0;
+
+  .navbar-brand {
+    font-family: 'Indie Flower', cursive;;
+    color: mintcream;
+    font-size: 1.5rem;
+  }
+
+  .nav-item {
+    margin-left: 1rem;
+
+    @media only screen and (min-width: 600px) {
+      .nav-link {
+      color: #bee5eb;
+      transition: all 0.3s ease-in;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .nav-link:hover {
+      color: $third;
+      background-color: $fourth;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      transition: all 0.4s ease-out;
+      font-weight: 700;
+    }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{% extends 'accounts/dashboard.html' %}
+{% block header %}
+    {% load static %}
+    <title>Blog Homepage</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+{% endblock %}
+{% block content %}
+    {% load widget_tweaks %}
+    <div class="container" id="gallery-form-container">
+        <div class="row">
+            <div class="col-sm-2 offset-1" id="vertical-nav">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'blog:list-blog' %}">View Blog</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'blog:create-blog' %}">Create Blog</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Shared Blogs</a>
+                    </li>
+                </ul>
+
+            </div>
+
+
+            <div class="col-sm-8 offset-1" id="blog-text-help">
+
+                <h3 class="text-warning">Here you can create blogs, share blogs and view other blog entries shared by other people
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        let vueInstance = new Vue({
+            el: '#gallery-form-container',
+            delimiters: ["<%","%>"],
+            data: () => {
+                return {
+                    message: 'Your name message',
+                    completed: true,
+                    label_text: '',
+                }
+            },
+            computed: {
+                display: function() {
+                    this.completed = false;
+                }
+            }
+        })
+    </script>
+{% endblock %}

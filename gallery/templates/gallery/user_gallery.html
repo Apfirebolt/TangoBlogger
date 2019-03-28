@@ -1,0 +1,100 @@
+{% extends 'accounts/dashboard.html' %}
+
+{% block header %}
+{% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/gallery.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid" id="app">
+        <div id="user-gallery" class="container text-center mx-auto">
+            <h3 class="text-center my-3 p-2">{{ request.user }}, Here are all your created galleries</h3>
+            {% for each_object in object_list %}
+                <div class="container user-gallery text-center">
+                    <div class="row">
+                        <a class="col-sm-6 offset-2" href="{% url 'gallery:detail-gallery' pk=each_object.pk %}">{{ each_object }}</a>
+                        <div class="col-sm-4">
+                            <button class="btn btn-warning" @click="deleteClick($event)"
+                                    value="{{ each_object.user_gallery }}">DELETE</button>
+                            <a href="{% url 'gallery:update-gallery' pk=each_object.pk %}" class="btn btn-warning">ADD MORE PICTURES</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <button class="btn btn-secondary" id="ajaxTest" @click="ajaxRequest">
+            Call Ajax
+        </button>
+
+        <div id="delete-message" class="container" v-if="isDelete">
+            <h4 class="text-center">
+                Are you sure you want to delete [[ delete_gallery ]]?
+            </h4>
+
+            <div class="container text-center">
+                <button class="text-white btn btn-danger my-3" @click="label_text = 'Sage'">
+                    Yes, Delete this Gallery</button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+    let vue = new Vue({
+            el: '#app',
+            delimiters: ["[[","]]"],
+            data: () => {
+                return {
+                    message: 'Your name message',
+                    completed: true,
+                    isDelete: false,
+                    delete_gallery: '',
+                    info: '',
+                    my_name: {
+                        'age':12,
+                        'name':'Amit',
+                    }
+                }
+            },
+
+            methods: {
+                deleteClick: function(e) {
+                    console.log('How this');
+                    this.delete_gallery = e.target.value;
+                    this.isDelete = !(this.isDelete);
+                },
+
+                consolas: function() {
+                    console.log('Prnt this mane');
+                },
+
+                myfun: function() {
+                    console.log('My fun was called');
+                },
+
+                ajaxRequest: function() {
+                   axios.defaults.xsrfCookieName = 'csrftoken',
+                   axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+                   axios.post('{% url 'blog:test' %}',
+                    {
+                        'amit':12
+                    }
+                    ).then(response => {
+                        console.log('This happened');
+                   })
+                }
+            },
+
+            computed: {
+                display: function() {
+                    this.completed = false;
+                    this.label_text = 'Drake';
+                }
+            },
+    })
+    </script>
+{% endblock %}

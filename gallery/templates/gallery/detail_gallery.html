@@ -1,0 +1,61 @@
+{% extends 'accounts/dashboard.html' %}
+{% block header %}
+    {% load static %}
+    <title>Gallery - {{ object.user_gallery }}</title>
+    <link rel="stylesheet" href="{% static 'css/aos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gallery.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container alert-danger mt-2 p-2 rounded text-center">
+        <h3 class="text-primary my-3">{{ request.user }}, You are currently viewing the images of the Gallery
+        - {{ object.user_gallery }}
+        </h3>
+        <p>Scroll down and the images would appear as you go down, each image has a different effect associated
+        with it.</p>
+    </div>
+    {% load gallery_filter %}
+
+    {% for each_image in all_pics %}
+
+       <div class="container text-center p-3 shadow rounded my-3"
+            {% if not forloop.last %}
+                data-aos={{ effects|custom_effect }}
+                data-aos-anchor-placement="center-center"
+            {% endif %}
+         id="image-container">
+
+            <div class="container-fluid" id="image-box">
+                <a href="{{ media_url }}/downloads/{{ each_image.gallery_name }}/{{ each_image.image_name }}">
+                    <object data="{{ media_url }}/downloads/{{ each_image.gallery_name }}/{{ each_image.image_name }}"
+                        type="image/png" height="400" width="550">
+                        <img src="https://appharbor.com/assets/images/stackoverflow-logo.png" alt="example">
+                    </object>
+                </a>
+            </div>
+
+            <div class="container">
+                <h3 class="text-center py-2">Image : {{ forloop.counter }}</h3>
+                <a class="btn btn-danger"
+                   href="{{ media_url }}/downloads/{{ each_image.gallery_name }}/{{ each_image.image_name }}">
+                    See this image in full size
+                </a>
+
+                <button class="btn btn-warning">Like</button>
+            </div>
+
+       </div>
+    {% endfor %}
+
+   <script src="{% static 'js/aos.js' %}"></script>
+    <script>
+        AOS.init();
+    </script>
+
+{% endblock %}
+
+
+
+
+
+

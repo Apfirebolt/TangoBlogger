@@ -1,0 +1,124 @@
+{% extends 'accounts/dashboard.html' %}
+
+{% block header %}
+    <title>Tango Blogger - Blog Details</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+
+
+    <div class="container-fluid text-center" id="app">
+
+        {% if not object.blogpost_set.count %}
+            <h3 id="blog-header">This Blog entry does not have any posts</h3>
+
+        {% else %}
+
+            <h2 id="blog-header">You are currently viewing entries for the blog
+                titled '{{ object.title }}'
+            </h2>
+
+            {% for each_post in object.blogpost_set.all %}
+
+            <div class="container" id="card-container">
+              <div class="card">
+                <div class="card-header">{{ each_post }}</div>
+
+                <div class="card-body">{{ each_post.body }}</div>
+
+                  {% if each_post.blog_image %}
+                    <a href="{{ each_post.blog_image.url }}">
+                        <img class="card-img-top" src="{{ each_post.blog_image.url }}"
+                         alt="Image not available" height="400" width="600">
+                    </a>
+                  {% endif %}
+
+                  <blog-component :title="[[ comment_data ]]"></blog-component>
+
+              </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    <p v-for="each_comment in comment_data">[[ each_comment ]]</p>
+
+
+    </div>
+
+    <script>
+
+    const local_comp = {
+        delimiters: ["[[","]]"],
+        props: ['title'],
+        data: function() {
+            return {
+                likes: 10,
+                name_string: 'amit'
+            }
+        },
+        pythofilters: {
+            caps: function (value) {
+                if (!value) return '';
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1)
+            }
+        },
+
+        methods: {
+          myfun: function() {
+              console.log('Fun begins now..');
+          }
+        },
+        template: `<div class="card-footer text-center">
+	                    <button class="btn btn-warning" id="commentBtn">Comment[[ name_string ]] | caps</button>
+	                    <button class="btn btn-warning" id="showBtn" @click="myfun()">Show Comments</button>
+	                    <button class="btn btn-warning" id="likeBtn" @click="likes++">Likes</button>
+                        <p>[[ title ]]</p>
+                    </div>
+                    `
+
+    };
+
+    let vueInstance = new Vue({
+        'el': '#app',
+        delimiters: ["[[","]]"],
+        data: () => {
+            return {
+                message: 'Your name message',
+                completed: true,
+                label_text: '',
+                comment_data: [],
+            }
+        },
+        components: {
+            'blog-component': local_comp,
+        },
+        computed: {
+
+        },
+        methods: {
+
+            apiFetch: function () {
+
+                axios.get('{% url 'blog:blog-api:comment-list' %}',
+                ).then(response => {
+                this.comment_data = response.data;
+                console.log(this.comment_data);
+                })
+            }
+        },
+
+        created() {
+            this.apiFetch();
+        },
+    });
+    </script>
+
+{% endblock %}

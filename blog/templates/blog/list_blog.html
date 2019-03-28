@@ -1,0 +1,37 @@
+{% extends 'accounts/dashboard.html' %}
+
+{% block header %}
+    <title>Tango Blogger - Create a Blog Category (All your related posts would be here)</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    {% if object_list %}
+        {% for object in object_list %}
+
+        <div class="container blog-entry">
+
+                <div class="row">
+                    <div class="col-sm-6 offset-1">
+                        <h3>{{ object.title }}</h3>
+                    </div>
+
+                    <div class="col-sm-4 offset-1">
+                        <p> <a href="{% url 'blog:update-blog' pk=object.pk %}">Update this blog entry</a></p>
+                    </div>
+                </div>
+
+            <a class="btn btn-warning m-2" href="{% url 'blog:detail-blog' slug=object.slug %}">View this Blog</a>
+            <a class="btn btn-warning m-2" href="{% url 'blog:create-post' blog=object.slug %}">Add a new Entry</a>
+            <a class="btn btn-warning m-2" href="{% url 'blog:create-post' blog=object.slug %}">Share this Blog</a>
+        </div>
+    {% endfor %}
+
+    {% else %}
+        <h3 id="no-blog">You don't have any blog, please create one and post entries in it.</h3>
+
+    {% endif %}
+{% endblock %}

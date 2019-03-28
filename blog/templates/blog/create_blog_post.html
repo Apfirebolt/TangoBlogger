@@ -1,0 +1,69 @@
+{% extends 'accounts/dashboard.html' %}
+
+{% block header %}
+    <title>Tango Blogger - Add a new post to a Blog</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% load widget_tweaks %}
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="text-center alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+   <div class="w-50 mx-auto my-3" id="app">
+
+   <h4 class="text-center mx-auto my-3 form-header" id="blog-header">TANGO BLOGGER - POST AN ENTRY IN BLOG</h4>
+       <h5 class="text-center mx-auto my-3 form-header" id="blog-header">{{ related_blog.title }}</h5>
+        <form method="post" action="#" id="blog-post-form" enctype="multipart/form-data">
+              {% csrf_token %}
+
+
+              <div class="form-group">
+                  <label for="{{ form.title_for_label }}">TITLE OF THE BLOG POST:</label>
+                  {{ form.title|add_class:"form-control" }}
+              </div>
+
+              <div class="form-group">
+                  <label for="{{ form.body_for_label }}">BODY OF THE BLOG:</label>
+                  {{ form.body|add_class:"form-control" }}
+              </div>
+
+              <div class="form-group">
+                  <label for="{{ form.blog_image_for_label }}">BLOG IMAGE (IF ANY):</label>
+                  {{ form.blog_image|add_class:"form-file-control" }}
+              </div>
+
+              <div class="container text-center">
+                  <input type="submit" class="btn btn-warning col-md-4" value="Create Blog Post">
+              </div>
+
+        </form>
+    </div>
+    <script>
+    let vueInstance = new Vue({
+        'el': '#app',
+        delimiters: ["<%","%>"],
+            data: () => {
+                return {
+                    message: 'Your name message',
+                    completed: true,
+                    label_text: '',
+                }
+            },
+            computed: {
+                display: function() {
+                    this.completed = false;
+                }
+            }
+    })
+    </script>
+{% endblock %}

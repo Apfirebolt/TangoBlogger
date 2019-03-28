@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {# Styles to be inherited #}
+    {% load static %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/vue.min.js' %}"></script>
+
+    {# Custom files to be included #}
+
+    {% block header %}
+        <title>Welcome to Dashboard</title>
+    {% endblock %}
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+      <!-- Brand -->
+      <a class="navbar-brand" href="{% url 'home' %}">Tango Blogger</a>
+
+      <!-- Toggler/collapsibe Button -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar links -->
+      <div class="collapse navbar-collapse justify-content-center" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'gallery:home-gallery' %}">GALLERY</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'blog:blog-home' %}">BLOG</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">PEOPLE</a>
+          </li>
+          <li class="nav-item">
+           <a class="nav-link" href="#">TODOS</a>
+          </li>
+
+            {% if request.user.is_authenticated %}
+
+          <!-- Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            Hello, {{ request.user.username }}
+          </a>
+
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'accounts:dashboard' %}">Dashboard</a>
+            <a class="dropdown-item" href="{% url 'accounts:settings' pk=request.user.id %}">Account Settings</a>
+            <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
+          </div>
+        </li>
+
+      {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+          </li>
+      {% endif %}
+        </ul>
+
+
+      </div>
+    </nav>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="text-center alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+{# Main content of the website goes here #}    
+{% block content %}
+
+    <div class="jumbotron text-center">
+    {% if request.user.is_authenticated %}
+        <h1>Hello {{ request.user.username }}, WELCOME TO TANGO BLOGGER</h1>
+    {% else %}
+        <h1>WELCOME TO TANGO BLOGGER, Why don't you login or register ?</h1>
+    {% endif %}
+    <p>Where you can add friends, write blogs share blogs and create your own toDo lists</p>
+</div>
+
+{% endblock %}
+
+</body>
+</html>

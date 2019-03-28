@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+    {% block header %}<title>Django Blogger - Place for blogging and creating toDos</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endblock %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Encode+Sans+Condensed|Karla|Lobster|Varela+Round" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+
+    </style>
+</head>
+<body>
+
+{% block content %}
+
+<div class="container-fluid">
+
+<!--Navigation Menu -->
+<nav class="navbar navbar-expand-md bg-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">Tango Blogger</a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+
+
+      {% if request.user.is_authenticated %}
+
+          <!-- Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            Hello, {{ request.user.username }}
+          </a>
+
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'accounts:dashboard' %}">Dashboard</a>
+            <a class="dropdown-item" href="{% url 'accounts:settings' pk=request.user.id %}">Account Settings</a>
+            <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
+          </div>
+        </li>
+
+      {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+          </li>
+      {% endif %}
+
+    </ul>
+  </div>
+</nav>
+
+{% if messages %}
+        {% for message in messages %}
+            <div class="text-center alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+<div class="jumbotron text-center">
+    {% if request.user.is_authenticated %}
+        <h1>Hello {{ request.user.username }}, WELCOME TO TANGO BLOGGER</h1>
+    {% else %}
+        <h1>WELCOME TO TANGO BLOGGER, Why don't you login or register ?</h1>
+    {% endif %}
+    <p>Where you can add friends, write blogs share blogs and create your own toDo lists</p>
+</div>
+
+    <div class="container header" id="app">
+    <h1> [[ message ]] Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque facilis ipsa nulla, officia quia.</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem delectus earum et illo laboriosam quam sapiente sunt,
+        velit voluptas voluptatem. A eligendi fugit quia sed! Dolore est laborum quos repellat sequi tempora.
+        Distinctio minima rem repellat ullam! Adipisci, nam, necessitatibus.</p>
+    </div>
+
+
+{% endblock %}
+</div>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
