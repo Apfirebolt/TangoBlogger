@@ -26,8 +26,8 @@
          id="image-container">
 
             <div class="container-fluid" id="image-box">
-                <a href="{{ media_url }}/downloads/{{ each_image.gallery_name }}/{{ each_image.image_name }}">
-                    <object data="{{ media_url }}/downloads/{{ each_image.gallery_name }}/{{ each_image.image_name }}"
+                <a href="{% get_media_prefix %}/downloads/{{ each_image.gallery_name }}/{{ each_image.image_name }}">
+                    <object data="{% get_media_prefix %}/downloads/{{ each_image.gallery_name }}/{{ each_image.image_name }}"
                         type="image/png" height="400" width="550">
                         <img src="https://appharbor.com/assets/images/stackoverflow-logo.png" alt="example">
                     </object>
