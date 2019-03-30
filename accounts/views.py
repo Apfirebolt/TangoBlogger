@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
-from . models import User
+from .models import User
 from .forms import RegisterForm
 from django.views.generic import CreateView, UpdateView, FormView, DetailView, View, ListView, TemplateView
 from django.shortcuts import render, get_object_or_404
@@ -11,6 +11,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.http import JsonResponse, Http404
 from TangoBlogger import settings
+from django.core.exceptions import ValidationError
 
 
 class Dashboard(LoginRequiredMixin, View):
@@ -27,8 +28,12 @@ class Register(SuccessMessageMixin, FormView):
 
     def form_valid(self, form):
         form.save()
+
         messages.add_message(self.request, messages.INFO, 'You have successfully registered, Please login to continue!')
         return HttpResponseRedirect(reverse('accounts:login'))
+
+    def form_invalid(self, form):
+        return render(self.request, 'accounts/register.html', {'form': form})
 
 
 def user_login(request):
@@ -40,12 +45,8 @@ def user_login(request):
         user = authenticate(username=username, password=password)
 
         if user:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect(reverse('home'))
-
-            else:
-                return HttpResponse('<h2> Account Not Active </h2>')
+            login(request, user)
+            return HttpResponseRedirect(reverse('home'))
 
         else:
             messages.warning(request, 'Invalid login credentials supplied. Please try to login again.')

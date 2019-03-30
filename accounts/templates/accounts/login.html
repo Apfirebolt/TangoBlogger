@@ -9,15 +9,7 @@
 
 {% block content %}
     {% load widget_tweaks %}
-    {% if error_message %}
-        <p>{{ error_message }}</p>
-    {% endif %}
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="text-center alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
 
    <div class="w-50 mx-auto my-3" id="login-form">
    <h4 class="text-center mx-auto my-3 form-header">TANGO BLOGGER - LOGIN</h4>
@@ -36,7 +28,7 @@
 
               <div class="container text-center">
                   <input type="submit" class="btn btn-warning col-md-4" name="" value="Login">
-                  <button class="btn btn-warning col-md-4"><a href="{% url 'accounts:register' %}">Register</a></button>
+                  <a href="{% url 'accounts:register' %}" class="btn btn-warning col-md-4"> Register</a>
               </div>
 
         </form>

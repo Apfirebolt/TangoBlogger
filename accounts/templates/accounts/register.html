@@ -8,18 +8,28 @@
 
 
 {% block content %}
+
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger text-center">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <div class="container w-50 mx-auto my-3" id="register-form">
         <h4 class="text-center form-header">REGISTRATION FORM</h4>
         <p class="text-warning my-3">Welcome to TangoBlogger - only required fields are your username
         and passwords, rest of the things can be left blank and modified later.</p>
-        <form enctype="multipart/form-data" method="post">{% csrf_token %}
+        <form action="{% url 'accounts:register' %}" enctype="multipart/form-data" method="post">{% csrf_token %}
         {% load widget_tweaks %}
-
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert-danger">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
 
         <div class="form-group">
             <label for="{{ form.username_for_label }}">Choose Your Username:</label>

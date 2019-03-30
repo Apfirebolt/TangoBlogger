@@ -37,7 +37,7 @@
             <div class="container">
                 <h3 class="text-center py-2">Image : {{ forloop.counter }}</h3>
                 <a class="btn btn-danger"
-                   href="{{ media_url }}/downloads/{{ each_image.gallery_name }}/{{ each_image.image_name }}">
+                   href="{% get_media_prefix %}/downloads/{{ each_image.gallery_name }}/{{ each_image.image_name }}">
                     See this image in full size
                 </a>
 
