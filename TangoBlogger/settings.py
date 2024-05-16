@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'social_django',
     'django_cleanup',
     'accounts',
-    'blog',
-    'gallery'
+    'blog'
 ]
 
 MIDDLEWARE = [
@@ -83,12 +82,12 @@ WSGI_APPLICATION = 'TangoBlogger.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'tango',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'postgres',
+        'PASSWORD': 'pass123',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'PORT': '5432',
     }
 }
 
@@ -137,3 +136,5 @@ LOGIN_REDIRECT_URL = '/accounts/dashboard'
 AUTH_USER_MODEL = 'accounts.User'
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
